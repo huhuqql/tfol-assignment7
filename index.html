@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://getbootstrap.com/docs/4.1/examples/product/ -->
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Collaborative Learning</title>
+
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/product.css" rel="stylesheet">
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/hero_id.js"></script>
+  <style>
+    .html,
+    body {
+      padding: 0px;
+      background-color: rgb(85, 90, 97);
+    }
+
+    .page {
+      background: rgb(255, 255, 255);
+      padding: 100px 0;
+      position: relative;
+      z-index: 99;
+    }
+
+    .page-alternate {
+      background: #CDEAF3;
+      padding: 100px 0;
+      position: relative;
+      z-index: 99;
+    }
+
+    .page-1 {
+      background: #B2DFEC;
+      padding: 100px 0;
+      position: relative;
+      z-index: 99;
+    }
+
+    .page-header {
+      background: url(img/bg/background.jpg) no-repeat;
+      background-position: center;
+      background-size: 100% 300%;
+      padding: 100px 0;
+      position: relative;
+      z-index: 99;
+    }
+
+    .title-page {
+      width: 70%;
+      margin-bottom: 40px;
+      margin-top: 20px;
+    }
+
+    .title-page .title {
+      color: #000000;
+      font-size: 48px;
+      margin: 0 auto;
+      font-family: Arial;
+    }
+
+    .title-page .title-description {
+      color: rgb(187, 179, 179);
+      font-size: 20px;
+      font-weight: 100;
+      margin: 0 auto;
+      font-family: Arial;
+    }
+
+    .content-page {
+      width: 80%;
+      margin-bottom: 40px;
+      margin-top: 20px;
+    }
+
+    .icons-example ul {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .icons-example ul li {
+      display: inline-block;
+      margin: 5px;
+      list-style: none;
+      cursor: pointer;
+    }
+
+    blockquote {
+      padding: 15px 20px;
+      border-left: 2px solid #99BFEB;
+    }
+
+    blockquote p {
+      color: rgb(132, 133, 136);
+      margin-bottom: 0;
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    blockquote small:before {
+      content: '';
+    }
+
+    .predict_container {
+      position: relative;
+    }
+
+    .cat-link {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      z-index: 100;
+      text-transform: uppercase;
+    }
+
+    .inputArea {
+      width: 90%;
+      height: 200px;
+      resize: none;
+    }
+
+    .post {
+      background-color: rgb(200, 226, 255);
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .reponse {
+      background-color: rgb(241, 210, 255);
+      padding: 10px;
+      margin-bottom: 10px;
+      width: 97%;
+    }
+
+    .allposts li {
+      list-style-type: none;
+    }
+
+    .avatars {
+      position: relative;
+      padding: 0;
+      list-style: none;
+      color: #555;
+    }
+
+    .avatars li {
+      position: relative;
+      margin: 10px;
+      width: 60px;
+      height: 60px;
+      float: left;
+    }
+
+    .avatars li img {
+      width: 60px;
+      height: 60px;
+    }
+
+    .avatars li.selected:before {
+      opacity: 1;
+    }
+
+    .avatars li.selected img {
+      box-shadow: 0 0 0 4px #948bf3;
+      animation: selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+      -o-animation: selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+      -ms-animation: selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+      -moz-animation: selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+      -webkit-animation: selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
+    }
+
+    a {
+      color: rgb(119, 119, 119);
+    }
+
+    .greyline {
+      height: 1px;
+      border: none;
+      border-top: 1px solid #888888b0;
+    }
+
+    #myBtn {
+      position: fixed;
+      bottom: 80px;
+      right: 30px;
+      z-index: 99;
+      font-size: 18px;
+      border: none;
+      outline: none;
+      background-color: #282b34;
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 4px;
+    }
+
+    #myBtn:hover {
+      background-color: #555;
+    }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-firestore.js"></script>
+  <!-- <script src="js/require.js"></script> -->
+  <script type="text/javascript">
+    window.onload = function(){
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      });
+    }
+
+
+    function logIn() {
+      $('#exampleModalCenter').modal('toggle');
+    }
+
+    function showPostModal() {
+      if (curUser != "") {
+        $('#postModal').modal('toggle');
+      }
+    }
+
+    function disableTooltip() {
+      $('[data-toggle="tooltip"]').tooltip("disable");
+    }
+  </script>
+
+
+  <script>
+    var curUser = "";
+    var curAvatar = "img/default.png";
+
+    function setUser_Avatar() {
+      curUser = document.getElementById("pseudoname").value;
+      for (var i = 0; i < avatars.length; i++) {
+        if (document.getElementById(avatars[i]).className == "selected") {
+          curAvatar = document.getElementById(avatars[i]).childNodes[1].src;
+        }
+      }
+      console.log(curAvatar);
+      if (curUser != "") {
+        disableTooltip();
+      }
+    }
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCdHIptsJ7pFdcwHfTH1JD2isWhhCI9DIo",
+      authDomain: "tools-for-online-learning.firebaseapp.com",
+      databaseURL: "https://tools-for-online-learning.firebaseio.com",
+      projectId: "tools-for-online-learning",
+      storageBucket: "tools-for-online-learning.appspot.com",
+      messagingSenderId: "42250736735"
+    };
+    firebase.initializeApp(config);
+
+    var firestore = firebase.firestore();
+    const settings = {/* your settings... */ timestampsInSnapshots: true };
+    firestore.settings(settings);
+
+
+    var curTime;
+    var NumPosts = 0;
+
+    var curResponsePost;
+    var NumResponses = 0;
+
+    function showResponseModal(id) {
+      if (curUser != "") {
+        curResponsePost = id.substring(0, id.length - 1);
+        console.log(curResponsePost);
+
+        firestore.collection("samples").doc(curResponsePost).collection("responses")
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              NumResponses++;
+              console.log(doc.id, " => ", doc.data());
+            });
+          })
+          .catch(function (error) {
+            console.log("Error getting documents: ", error);
+          });
+
+        $("#responseModal").modal('toggle');
+      }
+    }
+
+    function getCurrentTime() {
+      var time = new Date();
+      var m = time.getMonth() + 1;
+      curTime = time.getFullYear() + "-" + m + "-"
+        + time.getDate() + " " + time.getHours() + ":"
+        + time.getMinutes();
+    }
+
+    function sendPost() {
+      if (curUser == "") {
+        $('#exampleModalCenter').modal('toggle');
+      }
+      else {
+        getCurrentTime();
+        const curContent = $("#postbox").val();
+
+
+        const post = firestore.collection("samples").doc("post" + NumPosts);
+
+        post.set({
+          post: "post" + NumPosts,
+          time: curTime,
+          user: curUser,
+          content: curContent,
+          avatar: curAvatar
+        }).then(function () {
+          console.log("success");
+          location.reload();
+        }).catch(function (error) {
+          console.log("error");
+        });
+      }
+    }
+
+    function sendResponse() {
+
+      getCurrentTime();
+
+      const response = firestore.collection("samples").doc(curResponsePost).collection("responses").doc("response" + NumResponses);
+      console.log(response);
+      const curContent = $("#responsebox").val();
+      console.log("content = " + curContent);
+      console.log("time = " + curTime);
+      console.log("avatar = " + curAvatar);
+      console.log("user = " + curUser);
+
+
+      response.set({
+        response: "post" + NumResponses,
+        time: curTime,
+        user: curUser,
+        content: curContent,
+        avatar: curAvatar
+      }).then(function () {
+        console.log("success");
+        location.reload();
+      }).catch(function (error) {
+        console.log("error");
+      });
+    }
+
+    firestore.collection("samples")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          NumPosts++;
+          console.log(doc.id, " => ", doc.data());
+          showPost(doc.data().post, doc.data().content, doc.data().time, doc.data().user, doc.data().avatar);
+          var tempNumResponses = 0;
+          firestore.collection("samples").doc(doc.data().post).collection("responses")
+            .get()
+            .then(function (querySnapshot_r) {
+              querySnapshot_r.forEach(function (doc_r) {
+                tempNumResponses++;
+                console.log(doc_r.id, " => ", doc_r.data());
+                showResponse(doc.data().post + "r", doc_r.data().content, doc_r.data().time, doc_r.data().user, doc_r.data().avatar);
+              });
+            })
+            .catch(function (error) {
+              console.log("Error getting documents: ", error);
+            });
+        });
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  </script>
+
+</head>
+
+<body>
+
+
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-black">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+      <img src="img/logo.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+  <div class="page-header">
+    <div class="container">
+      <div class="row justify-content-center">
+
+        <div style="text-align:center" class="title-page">
+          <h2 class="title">Collaborative Learning Video</h2>
+          <h3 class="title-description"></h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page-1">
+    <div class="container">
+      <div class="row justify-content-center">
+
+        <div class="title-page">
+          <h2 class="title">Instruction</h2>
+          <blockquote style="margin:15px">
+            <p>Hi, thanks for participating our test! After you finish watching the instruction video about how lighter works,
+              please do the following two things <b>in any order </b>you like (you can either ask first or answer first):</p>
+          </blockquote>
+        </div>
+        <div class="row justify-content-center">
+          <div class="content-page">
+            <p style="font-size:17px">1. Answer one question of default one or any other questions posted in the forum. If it is the posted question
+              by others, please first answer the question according to your understand and then comment on the original answer
+              by the thread starter. </p>
+            <p style="font-size:17px">2. Ask one “good” question about the main content of the video. And then Write down your answer to the question
+              you raised according to your understanding. </p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page-alternate">
+    <div class="container">
+      <div class="row justify-content-center">
+
+        <div class="title-page">
+          <h2 class="title">How the lighter works</h2>
+          <blockquote style="margin:15px">
+            <p>This video gives a clear explanation with visual to help you understand how the lighter works. The video includes
+              the basic structure of a lighter, the introduction of the fuel, and how the lighter works.</p>
+          </blockquote>
+        </div>
+        <div id="player"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="title-page">
+            <h2 class="title">Discussion Posts</h2>
+            <blockquote style="margin:15px">
+              <p>Feel free to ask any question here!</p>
+            </blockquote>
+            <h3 class="title-description"></h3>
+          </div>
+        </div>
+      </div>
+      <ul id="allposts" class="allposts">
+
+        <script type="text/javascript">
+          function showPost(id, content, time, user, avatar) {
+            $("#allposts").append("<li><div style=margin-left:1px class=row>" +
+              "<div class=col-auto><a hred=#><img alt=avatar src=" + avatar + " height=60 width=60></a></div>" +
+              "<div style=padding-left:0px class=col-auto><h4>" + user + "</h4><p>" + time + "</p></div></div>" +
+              "<div class=col-sm-8><div class=post><p>" + content + "</p></div></div></li><ul id=" + id + "r></ul>" +
+              " <div class=row><div class=col-sm-8><a id=" + id + "a style=float:right href=javascript:void(0);" +
+              " onclick=showResponseModal(this.id) data-toggle=tooltip data-placement=top title=Please&nbsp;Login&nbsp;First>Add a response...</a></div></div>" + "<div class=row><div class=col-sm-8><hr class=greyline></div></div>");
+            $('li').on('click', function () {
+
+            });
+          }
+
+          function showResponse(ulid, content, time, user, avatar) {
+            $("#" + ulid).append("<li><div style=margin-left:1px class=row>" +
+              "<div class=col-auto><a hred=#><img alt=avatar src=" + avatar + " height=60 width=60></a></div>" +
+              "<div style=padding-left:0px class=col-auto><h4>" + user + "</h4><p>" + time + "</p></div></div>" +
+              "<div class=col-sm-8><div class=reponse><p>" + content + "</p></div></div></li>");
+            $('li').on('click', function () {
+
+            });
+          }
+        </script>
+      </ul>
+      <script>
+
+      </script>
+
+    </div>
+
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+          <button id="newQuestion" style="margin-top:10px;float:right;" type="button" class="btn btn btn-primary" onclick="showPostModal()"
+            data-toggle="tooltip" data-placement="top" title="Please Login First">Ask a new Question</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <footer>
+
+  </footer>
+
+  <div class="modal fade" id="responseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Response a Question</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group">
+            <label for="basic-url">Response</label>
+            <div class="input-group mb-3">
+              <textarea style="resize: none;" id="responsebox" class="form-control" aria-label="With textarea"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn btn-primary" data-dismiss="modal" onclick="sendResponse()">Reply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Ask a New Question</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group">
+            <label for="basic-url">Question</label>
+            <div class="input-group mb-3">
+              <textarea style="resize: none;" id="postbox" class="form-control" aria-label="With textarea"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="sendPost()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Who are you?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label for="basic-url">Enter a Pseudoname</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="pseudoname" aria-describedby="basic-addon3">
+          </div>
+        </div>
+        <div id="avatar-body" class="modal-body">
+          <label for="basic-url">Pick an avatar you like</label>
+          <ul class="avatars">
+            <li id="img1" class="">
+              <img src="img/1.jpg" />
+            </li>
+            <li id="img2" class="">
+              <img src="img/2.jpg" />
+            </li>
+            <li id="img3" class="">
+              <img src="img/3.jpg" />
+            </li>
+            <li id="img4" class="">
+              <img src="img/4.jpg" />
+            </li>
+            <li id="img5" class="">
+              <img src="img/5.jpg" />
+            </li>
+            <li id="img6" class="">
+              <img src="img/6.jpg" />
+            </li>
+            <li id="img7" class="">
+              <img src="img/7.jpg" />
+            </li>
+            <li id="img8" class="">
+              <img src="img/8.jpg" />
+            </li>
+            <li id="img9" class="">
+              <img src="img/9.jpg" />
+            </li>
+            <li id="img10" class="">
+              <img src="img/10.jpg" />
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="setUser_Avatar()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="myBtn" title="Go to top" style="padding-top:13px;" onclick="logIn()">Log In</button>
+
+  <script>
+          // 2. This code loads the IFrame Player API code asynchronously.
+          var tag = document.createElement('script');
+          tag.src = "https://www.youtube.com/iframe_api";
+          var firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+          // 3. This function creates an <iframe> (and YouTube player)
+          //    after the API code downloads.
+          var player;
+          function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+              height: '720',
+              width: '1280	',
+              videoId: 'ZC6860BW7kA',
+              playerVars: { 'autoplay': 0, 'wmode': 'transparent', 'fs': 0, 'controls': 1, 'rel': 0, 'modestbranding': 1, 'showinfo': 0 },
+              events: {
+
+              }
+            });
+          }
+          // document.getElementById('player').style['z-index'] = -10;
+          // document.getElementById('player').style['-webkit-transform'] = 'translateZ(0)';
+          function onPlayerReady(event) {
+            event.target.playVideo();
+          }
+  </script>
+
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/imgselect.js"></script>
+
+
+</body>
+
+</html>
